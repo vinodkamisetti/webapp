@@ -47,6 +47,13 @@ pipeline {
                 sh 'scp -o StrictHostKeyChecking=no target/*.war sidd@40.76.5.105:/home/sidd/prod/apache-tomcat-8.5.59/webapps/webapp.war'
               }      
            }       
+    stage ('DAST') {
+      steps {
+        sshagent(['Tomcat']) {
+         sh 'ssh -o  StrictHostKeyChecking=no sidd@40.76.2.234 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://40.76.5.105:8080/webapp/" || true'
+        }
+      }
     }
+    
   }
 }
