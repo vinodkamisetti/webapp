@@ -46,7 +46,8 @@ pipeline {
            sshagent(['Tomcat']) {
                 sh 'scp -o StrictHostKeyChecking=no target/*.war sidd@40.76.5.105:/home/sidd/prod/apache-tomcat-8.5.59/webapps/webapp.war'
               }      
-           }       
+           }
+    }
     stage ('DAST') {
       steps {
         sshagent(['Tomcat']) {
@@ -56,5 +57,4 @@ pipeline {
     }
     
   }
-}
 }
