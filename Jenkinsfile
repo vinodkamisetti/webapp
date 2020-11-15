@@ -50,7 +50,7 @@ pipeline {
     }
     stage ('DAST') {
       steps {
-        sshagent(['Tomcat']) {
+        sshagent(['ZAP']) {
          sh 'ssh -o  StrictHostKeyChecking=no sidd@40.76.2.234 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://40.76.5.105:8080/webapp/" || true'
         }
       }
