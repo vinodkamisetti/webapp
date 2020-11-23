@@ -31,7 +31,7 @@ pipeline {
     stage ('SAST') {
       steps {
         withSonarQubeEnv('Sonar') {
-          sh 'mvn sonar:sonar'
+          sh 'mvn sonar:sonar -Dsonar.issuesreport.html.enable=true'
           sh 'cat target/sonar/report-task.txt'
         }
       }
@@ -51,7 +51,7 @@ pipeline {
     stage ('DAST') {
       steps {
         sshagent(['ZAP']) {
-         sh 'ssh -o  StrictHostKeyChecking=no sidd@40.76.2.234 "docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py -t https://www.example.com -g gen.conf -r testreport.html" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no sidd@40.76.2.234 "docker run -v /var/lib/jenkins/workspace/DevSecOps-Project/sidd/:/zap/wrk/ -t owasp/zap2docker-stable zap-baseline.py -t http://40.76.5.105:8085/webapp -x testreport.xml" || true'
         }
       }
     }
