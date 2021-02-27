@@ -34,5 +34,12 @@ pipeline {
               }      
            }       
     }
+    stage ('DAST') {
+      steps {
+        sshagent(['Tomcat']) {
+         sh 'ssh -o  StrictHostKeyChecking=no skamal@52.152.217.58 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://52.152.217.58:8080/webapp/" || true'
+        }
+      }
+    }
   }
 }
