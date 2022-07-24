@@ -19,10 +19,11 @@ pipeline {
           sh 'cat trufflehog'
       }
     }
-    stage ('Source Composition Analysis') {
+    stage ('Sonar-Qube') {
       steps {
         withSonarQubeEnv('Sonar') {
           sh 'mvn sonar:sonar'
+      }
       }
     }
 //    stage ('Build') {
