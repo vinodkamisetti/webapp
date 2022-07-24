@@ -22,15 +22,15 @@ pipeline {
     stage ('Sonar-Qube') {
       steps {
         withSonarQubeEnv('Sonar') {
-          sh 'mvn clean verify sonar:sonar'
+          sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=new -Dsonar.host.url=http://34.243.165.5:9000 -Dsonar.login=sqp_d60ffb04fd0d3d14ca3445aff6532173b85544fe'
       }
       }
     }
-//    stage ('Build') {
-//      steps {
-//      sh 'mvn clean package'
-//       }
-//    }
+    stage ('Build') {
+      steps {
+      sh 'mvn clean package'
+       }
+    }
     stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['Tomcat']) {
