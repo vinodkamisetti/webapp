@@ -26,6 +26,12 @@ pipeline {
 //      }
 //      }
 //    }
+     stage ('SCA') {
+       steps {
+          sh 'chmod +x owasp-dependency-check.sh'
+          sh 'sh owasp-dependency-check.sh'  
+      }
+    }
     stage ('Build') {
       steps {
       sh 'mvn clean package'
