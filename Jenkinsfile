@@ -22,7 +22,7 @@ pipeline {
     stage ('Sonar-Qube') {
       steps {
         withSonarQubeEnv('Sonar') {
-          sh 'mvn clean sonar:sonar'
+          sh 'mvn clean verify sonar:sonar'
       }
       }
     }
