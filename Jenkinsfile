@@ -22,7 +22,7 @@ pipeline {
     stage ('Sonar-Qube') {
       steps {
         withSonarQubeEnv('Sonar') {
-          sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=new -Dsonar.host.url=http://34.243.165.5:9000 -Dsonar.login=974a43f58d8b004b82ff9891d064a930fb944653'
+          sh 'mvn sonar:sonar'
       }
       }
     }
