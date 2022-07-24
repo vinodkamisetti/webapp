@@ -12,6 +12,20 @@ pipeline {
             '''
       }
     }
+    stage ('Build') {
+      steps {
+      sh 'mvn clean package'
+       }
+    }
+    stage ('Deploy-To-Tomcat') {
+            steps {
+           sshagent(['Tomcat']) {
+                sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@34.243.165.5:/opt/tomcat/apache-tomcat-9.0.65/webapps/webapp.war'
+              }      
+           }       
+    }
+  }
+}
 //    stage ('Trufflehog') {
 //      steps {
 //          sh 'rm trufflehog || true'
@@ -26,33 +40,19 @@ pipeline {
 //      }
 //      }
 //    }
-     stage ('SCA') {
-       steps {
-          sh 'chmod +x owasp-dependency-check.sh'
-          sh 'sh owasp-dependency-check.sh'  
-      }
-    }
-    stage ('Build') {
-      steps {
-      sh 'mvn clean package'
-       }
-    }
-    stage ('Deploy-To-Tomcat') {
-            steps {
-           sshagent(['Tomcat']) {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@34.243.165.5:/opt/tomcat/apache-tomcat-9.0.65/webapps/webapp.war'
-              }      
-           }       
-    }
-    stage ('DAST') {
-      steps {
-        sshagent(['Tomcat']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@34.243.165.5 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://34.243.165.5:8080/webapp/" || true'
-        }
-      }
-    }
-  }
-}
+//     stage ('SCA') {
+//       steps {
+//          sh 'chmod +x owasp-dependency-check.sh'
+//          sh 'sh owasp-dependency-check.sh'  
+//      }
+//    }
+//    stage ('DAST') {
+//      steps {
+//        sshagent(['Tomcat']) {
+//         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@34.243.165.5 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://34.243.165.5:8080/webapp/" || true'
+//        }
+//      }
+//    }
 //    stage ('Source Composition Analysis') {
 //      steps {
 //         sh 'rm owasp* || true'
