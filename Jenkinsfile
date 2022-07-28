@@ -34,14 +34,14 @@ pipeline {
     stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@3.68.75.208:/opt/tomcat/apache-tomcat-9.0.65/webapps/webapp.war'
+                sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@18.184.216.18:/opt/tomcat/apache-tomcat-9.0.65/webapps/webapp.war'
               }      
            }       
     }
     stage ('DAST') {
       steps {
         sshagent(['tomcat']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@3.68.75.208 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://3.68.75.208:8080/webapp/" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@18.184.216.18 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://18.184.216.18:8080/webapp/" || true'
         }
       }
     }
@@ -70,7 +70,7 @@ pipeline {
 //    stage ('DAST') {
 //      steps {
 //        sshagent(['Tomcat']) {
-//         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@3.121.116.95 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://54.93.231.51:8080/webapp/" || true'
+//         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@18.184.216.18 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://18.184.216.18:8080/webapp/" || true'
 //        }
 //      }
 //    }
